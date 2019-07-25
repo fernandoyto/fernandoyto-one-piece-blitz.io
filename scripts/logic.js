@@ -3,58 +3,64 @@ const colorList = ['white', 'green', 'blue', 'red', 'grey'];
 
 class Card {
   constructor(itemArray, colorArray) {
-    let randomItemIndex = Math.floor(Math.random() * itemArray.length);
-    let randomColorIndex = Math.floor(Math.random() * colorArray.length);
-
     const copyItemList = [...itemArray];
     const copyColorList = [...colorArray];
 
-    this.item1 = copyItemList[randomItemIndex];
-    this.color1 = copyColorList[randomColorIndex];
+    const indexArray = [];
+    copyItemList.forEach((element, index) => {
+      indexArray.push(index);
+    });
 
-    copyItemList.splice(randomItemIndex, 1);
-    copyColorList.splice(randomColorIndex, 1);
+    const answerIndex = Math.floor(Math.random() * indexArray.length);
+    this.correctItem = copyItemList[answerIndex];
+    this.correctColor = copyColorList[answerIndex];
 
-    if (randomItemIndex !== randomColorIndex) {
-      /* if the first item-color combination does not have fully correct properties,
-      just pick random properties again* */
-      randomItemIndex = Math.floor(Math.random() * copyItemList.length);
-      randomColorIndex = Math.floor(Math.random() * copyColorList.length);
+    let randomIndex;
 
-      this.item2 = copyItemList[randomItemIndex];
-      this.color2 = copyColorList[randomColorIndex];
+    // randomly decide if card will have zero correct attributes or 1 fully correct element
+    if (Math.random() >= 0.5) {
+      // if true, then it will have 1 fully correct element
+      this.item1 = copyItemList[answerIndex];
+      this.color1 = copyColorList[answerIndex];
+
+      indexArray.splice(indexArray.indexOf(answerIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.item2 = copyItemList[randomIndex];
+
+      indexArray.splice(indexArray.indexOf(randomIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.color2 = copyColorList[randomIndex];
     } else {
-      /* however, if first item-color combination does have fully correct properties,
-      then I have to guarantee that next combination will not be correct */
-      do {
-        randomItemIndex = Math.floor(Math.random() * copyItemList.length);
-        randomColorIndex = Math.floor(Math.random() * copyColorList.length);
-      }
-      while (randomItemIndex === randomColorIndex);
-      this.item2 = copyItemList[randomItemIndex];
-      this.color2 = copyColorList[randomColorIndex];
+      // if false, then it will have zero correct elements
+      indexArray.splice(indexArray.indexOf(answerIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.item1 = copyItemList[randomIndex];
+
+      indexArray.splice(indexArray.indexOf(randomIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.color1 = copyColorList[randomIndex];
+
+      indexArray.splice(indexArray.indexOf(randomIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.item2 = copyItemList[randomIndex];
+
+      indexArray.splice(indexArray.indexOf(randomIndex), 1);
+      randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+      this.color2 = copyColorList[randomIndex];
     }
   }
 
   isCorrect(pickedObject) {
-    if (this.item1 === pickedObject.item && this.color1 === pickedObject.color) {
-      return true;
-    }
-    if (this.item2 === pickedObject.item && this.color2 === pickedObject.color) {
+    if (pickedObject.item === this.correctItem && pickedObject.color === this.correctColor) {
       return true;
     }
     return false;
-  }
-
-  defineCorrectAnswer() {
-    let correctAnswer;
-    if (itemList.indexOf(this.item1) === colorList.indexOf(this.color1)) {
-      correctAnswer = { item: this.item1, color: this.color1 };
-    }
-    if (itemList.indexOf(this.item2) === colorList.indexOf(this.color2)) {
-      correctAnswer = { item: this.item2, color: this.color2 };
-    }
-    
   }
 }
 
@@ -70,9 +76,3 @@ const objects = [];
 for (let i = 0; i < itemList.length; i++) {
   objects.push(new ObjToPick(itemList, colorList, i));
 }
-
-let testCard = new Card(itemList,colorList);
-
-console.log(testCard);
-
-console.log(testCard.correctAnswer(objects[1]));
