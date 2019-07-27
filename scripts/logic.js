@@ -1,78 +1,84 @@
-const itemList = ['ghost', 'bottle', 'book', 'chair', 'mice'];
-const colorList = ['white', 'green', 'blue', 'red', 'grey'];
+const wantedName = ['luffy', 'law', 'ace', 'chopper', 'sabo'];
+const wantedHat = ['luffy-hat', 'law-hat', 'ace-hat', 'chopper-hat', 'sabo-hat'];
 
-class Card {
-  constructor(itemArray, colorArray) {
-    const copyItemList = [...itemArray];
-    const copyColorList = [...colorArray];
+class WantedHatCombo {
+  constructor(wantedArray, hatArray) {
+    const copyWantedName = [...wantedArray];
+    const copyWantedHat = [...hatArray];
 
     const indexArray = [];
-    copyItemList.forEach((element, index) => {
+    copyWantedName.forEach((element, index) => {
       indexArray.push(index);
     });
 
     const answerIndex = Math.floor(Math.random() * indexArray.length);
-    this.correctItem = copyItemList[answerIndex];
-    this.correctColor = copyColorList[answerIndex];
+    this.correctWanted = copyWantedName[answerIndex];
+    this.correctHat = copyWantedHat[answerIndex];
 
     let randomIndex;
 
     // randomly decide if card will have zero correct attributes or 1 fully correct element
     if (Math.random() >= 0.5) {
       // if true, then it will have 1 fully correct element
-      this.item1 = copyItemList[answerIndex];
-      this.color1 = copyColorList[answerIndex];
+      this.wanted1 = copyWantedName[answerIndex];
+      this.hat1 = copyWantedHat[answerIndex];
 
       indexArray.splice(indexArray.indexOf(answerIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.item2 = copyItemList[randomIndex];
+      this.wanted2 = copyWantedName[randomIndex];
 
       indexArray.splice(indexArray.indexOf(randomIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.color2 = copyColorList[randomIndex];
+      this.hat2 = copyWantedHat[randomIndex];
     } else {
       // if false, then it will have zero correct elements
       indexArray.splice(indexArray.indexOf(answerIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.item1 = copyItemList[randomIndex];
+      this.wanted1 = copyWantedName[randomIndex];
 
       indexArray.splice(indexArray.indexOf(randomIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.color1 = copyColorList[randomIndex];
+      this.hat1 = copyWantedHat[randomIndex];
 
       indexArray.splice(indexArray.indexOf(randomIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.item2 = copyItemList[randomIndex];
+      this.wanted2 = copyWantedName[randomIndex];
 
       indexArray.splice(indexArray.indexOf(randomIndex), 1);
       randomIndex = indexArray[Math.floor(Math.random() * indexArray.length)];
 
-      this.color2 = copyColorList[randomIndex];
+      this.hat2 = copyWantedHat[randomIndex];
     }
   }
 
-  isCorrect(pickedObject) {
-    if (pickedObject.item === this.correctItem && pickedObject.color === this.correctColor) {
+  isCorrect(pickedWanted) {
+    if (pickedWanted.wanted === this.correctWanted && pickedWanted.hat === this.correctHat) {
       return true;
     }
     return false;
   }
 }
 
-class ObjToPick {
-  constructor(itemArray, colorArray, i) {
-    this.item = itemArray[i];
-    this.color = colorArray[i];
+class WantedToPick {
+  constructor(wantedArray, hatArray, i) {
+    this.wanted = wantedArray[i];
+    this.hat = hatArray[i];
   }
 }
 
 const objects = [];
 
-for (let i = 0; i < itemList.length; i++) {
-  objects.push(new ObjToPick(itemList, colorList, i));
+for (let i = 0; i < wantedName.length; i++) {
+  objects.push(new WantedToPick(wantedName, wantedHat, i));
 }
+
+console.log (objects[0].wanted)
+
+// let test = new WantedHatCombo(wantedName, wantedHat);
+
+// console.log(test.correctWanted, test.correctHat, test.wanted1, test.hat1, test.wanted2, test.hat2);
