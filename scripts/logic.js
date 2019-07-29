@@ -1,5 +1,5 @@
-const wantedName = ['luffy', 'law', 'ace', 'chopper', 'sabo'];
-const wantedHat = ['luffy-hat', 'law-hat', 'ace-hat', 'chopper-hat', 'sabo-hat'];
+const wantedName = ['luffy', 'ace', 'sabo', 'chopper', 'law'];
+const wantedHat = ['luffy-hat', 'ace-hat', 'sabo-hat', 'chopper-hat', 'law-hat'];
 
 class WantedHatCombo {
   constructor(wantedArray, hatArray) {
@@ -76,9 +76,3 @@ const objects = [];
 for (let i = 0; i < wantedName.length; i++) {
   objects.push(new WantedToPick(wantedName, wantedHat, i));
 }
-
-console.log (objects[0].wanted)
-
-// let test = new WantedHatCombo(wantedName, wantedHat);
-
-// console.log(test.correctWanted, test.correctHat, test.wanted1, test.hat1, test.wanted2, test.hat2);
