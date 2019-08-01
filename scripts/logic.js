@@ -1,5 +1,6 @@
 const wantedName = ['luffy', 'ace', 'sabo', 'chopper', 'law'];
 const wantedHat = ['luffy-hat', 'ace-hat', 'sabo-hat', 'chopper-hat', 'law-hat'];
+const wantedAnswer = ['Q', 'W', 'E', 'A', 'S'];
 
 class WantedHatCombo {
   constructor(wantedArray, hatArray) {

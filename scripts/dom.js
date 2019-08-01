@@ -29,8 +29,8 @@ function createCombo() {
   for (let i = 0; i < properties.length; i++) {
     let elem = document.createElement('img');
     elem.setAttribute('src', `./images/characters/${properties[i]}.png`);
-    elem.setAttribute('height', '300');
-    elem.setAttribute('width', '300');
+    elem.setAttribute('height', '250');
+    elem.setAttribute('width', '250');
     elem.setAttribute('class', 'cards');
     document.querySelector('.game').appendChild(elem);
   }
@@ -43,19 +43,46 @@ function erasePreviousCombo() {
   }
 }
 
-// eslint-disable-next-line func-names
-document.querySelector('.start-btn').onclick = function () {
+function gameStart() {
   document.querySelector('.logo').classList.add('inactive');
+  document.querySelector('.background').classList.add('background-2');
+  document.querySelector('.background').classList.remove('background');
   document.querySelector('.start-btn').classList.add('inactive');
-  createCombo();
-  for (let i = 0; i < objects.length; i++) {
-    let elem = document.createElement('img');
-    elem.setAttribute('src', `./images/characters/${objects[i].wanted}-wanted.png`);
-    elem.setAttribute('height', '300');
-    elem.setAttribute('width', '200');
-    elem.setAttribute('class', 'rounded mx-auto d-block');
-    document.querySelector(`.${objects[i].wanted}`).appendChild(elem);
-  }
+  let timerText = document.createElement('p');
+  timerText.setAttribute('class', 'countdown');
+  document.querySelector('.game').appendChild(timerText);
+  let timeLeft = 3;
+  let startTimer = setInterval(function() {
+    document.querySelector('.countdown').innerHTML = `Game will start in ${timeLeft}`;
+    timeLeft -= 1;
+    if (timeLeft < 0) {
+      clearInterval(startTimer);
+      document.querySelector('.countdown').classList.add('inactive');
+      createCombo();
+      for (let i = 0; i < objects.length; i++) {
+        let elem = document.createElement('img');
+        elem.setAttribute('src', `./images/characters/${objects[i].wanted}-wanted.png`);
+        elem.setAttribute('height', '300');
+        elem.setAttribute('width', '200');
+        elem.setAttribute('class', 'rounded mx-auto d-block wanted');
+        document.querySelector(`.${objects[i].wanted}`).appendChild(elem);
+        let text = document.createElement('span');
+        text.textContent = `Press ${wantedAnswer[i]} for ${objects[i].wanted}!`;
+        text.setAttribute('class', 'textForAnswer')
+        document.querySelector(`.${objects[i].wanted}`).appendChild(text);
+      }
+    }
+  }, 1000);
+}
+
+// eslint-disable-next-line func-names
+/*
+event listener for start button
+hide logo, instantiate a new 'card' using createCombo
+create answer options with for loop
+*/
+document.querySelector('.start-btn').onclick = function () {
+  gameStart();
 };
 
 document.addEventListener('keydown', function (event) {
