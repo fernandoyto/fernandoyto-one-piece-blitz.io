@@ -1,34 +1,7 @@
-/* eslint-disable func-names */
-/* eslint-disable default-case */
-/* eslint-disable prefer-arrow-callback */
-function shuffle(array) {
-  let currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-let currentCombo;
-
-function createCombo() {
-  currentCombo = new WantedHatCombo(wantedName, wantedHat);
-  const properties = [currentCombo.wanted1, currentCombo.hat1, currentCombo.wanted2, currentCombo.hat2];
-  shuffle(properties);
-  for (let i = 0; i < properties.length; i++) {
+function displayCombo(array) {
+  for (let i = 0; i < array.length; i++) {
     let elem = document.createElement('img');
-    elem.setAttribute('src', `./images/characters/${properties[i]}.png`);
+    elem.setAttribute('src', `./images/characters/${array[i]}.png`);
     elem.setAttribute('height', '250');
     elem.setAttribute('width', '250');
     elem.setAttribute('class', 'cards');
@@ -36,7 +9,7 @@ function createCombo() {
   }
 }
 
-function gameEnd() {
+function gameEnd(blitz) {
   let images = document.getElementsByClassName('cards');
   for (let i = images.length; i-->0;) {
     document.images[i].parentNode.removeChild(document.images[i]);
@@ -45,26 +18,26 @@ function gameEnd() {
     document.querySelector(`.${wantedName[j]}`).textContent = '';
   }
   document.querySelector('.gameTime').innerHTML = '';
-  document.querySelector('.game').innerHTML = `You got ${correctAnswers} correct answers!!`;
+  document.querySelector('.game').innerHTML = `You got ${blitz.correctAnswers} correct answers!!`;
 }
 
-function instantiateWanteds() {
-  for (let i = 0; i < objects.length; i++) {
+function displayWanteds(blitz) {
+  for (let i = 0; i < blitz.wantedName.length; i++) {
     let elem = document.createElement('img');
-    elem.setAttribute('src', `./images/characters/${objects[i].wanted}-wanted.png`);
+    elem.setAttribute('src', `./images/characters/${blitz.wantedName[i]}-wanted.png`);
     elem.setAttribute('height', '300');
     elem.setAttribute('width', '200');
     elem.setAttribute('class', 'rounded mx-auto d-block wanted');
-    document.querySelector(`.${objects[i].wanted}`).appendChild(elem);
+    elem.setAttribute('id', blitz.wantedName[i]);
+    document.querySelector(`.${blitz.wantedName[i]}`).appendChild(elem);
     let text = document.createElement('p');
-    text.textContent = `Press ${wantedAnswer[i]} for ${objects[i].wanted}!`;
-    // text.setAttribute('class', 'textForAnswer')
-    document.querySelector(`.${objects[i].wanted}`).appendChild(text);
+    text.textContent = `Press ${blitz.wantedAnswer[i]} for ${blitz.wantedName[i]}!`;
+    document.querySelector(`.${blitz.wantedName[i]}`).appendChild(text);
   }
 }
 
 
-function startTimer() {
+function startTimer(blitz) {
   let gameTimeLeft = 30;
   let downloadTimer = setInterval(function () {
     document.querySelector('.gameTime').innerHTML = gameTimeLeft + ' seconds remaining';
@@ -74,7 +47,7 @@ function startTimer() {
     }
     if (gameTimeLeft < 0) {
       clearInterval(downloadTimer);
-      gameEnd();
+      gameEnd(blitz);
     }
   }, 1000);
 }
@@ -87,11 +60,14 @@ function erasePreviousCombo() {
 }
 
 function gameStart() {
-  correctAnswers = 0;
+  const blitz = new OnePieceBlitz();
+  blitz.gameStart();
+  
   document.querySelector('.logo').classList.add('inactive');
   document.querySelector('.background').classList.add('background-2');
   document.querySelector('.background').classList.remove('background');
   document.querySelector('.start-btn').classList.add('inactive');
+
   let timerText = document.createElement('p');
   timerText.setAttribute('class', 'countdown');
   document.querySelector('.game').appendChild(timerText);
@@ -102,59 +78,54 @@ function gameStart() {
     if (countdownTimer < 0) {
       clearInterval(startCountdown);
       document.querySelector('.countdown').classList.add('inactive');
-      createCombo();
-      instantiateWanteds();
-      startTimer();
+      displayWanteds(blitz);
+      displayCombo(blitz.combo);
+      startTimer(blitz);
+
+      document.addEventListener('keydown', function (event) {
+        switch (event.keyCode) {
+          case 81:
+            if (blitz.isCorrect('luffy', 'luffy-hat')) {
+              erasePreviousCombo();
+              blitz.defineCombo();
+              displayCombo(blitz.combo);
+            } else { alert('errou!!!'); }
+            break;
+          case 87:
+            if (blitz.isCorrect('ace', 'ace-hat')) {
+              erasePreviousCombo();
+              blitz.defineCombo();
+              displayCombo(blitz.combo);
+            } else { alert('errou!!!'); }
+            break;
+          case 69:
+            if (blitz.isCorrect('sabo', 'sabo-hat')) {
+              erasePreviousCombo();
+              blitz.defineCombo();
+              displayCombo(blitz.combo);
+            } else { alert('errou!!!'); }
+            break;
+          case 65:
+            if (blitz.isCorrect('chopper', 'chopper-hat')) {
+              erasePreviousCombo();
+              blitz.defineCombo();
+              displayCombo(blitz.combo);
+            } else { alert('errou!!!'); }
+            break;
+          case 83:
+            if (blitz.isCorrect('law', 'law-hat')) {
+              erasePreviousCombo();
+              blitz.defineCombo();
+              displayCombo(blitz.combo);
+            } else { alert('errou!!!'); }
+            break;
+        }
+      });
     }
   }, 1000);
 }
 
-// eslint-disable-next-line func-names
-/*
-event listener for start button
-hide logo, instantiate a new 'card' using createCombo
-create answer options with for loop
-*/
 document.querySelector('.start-btn').onclick = function () {
   gameStart();
 };
 
-document.addEventListener('keydown', function (event) {
-  switch (event.keyCode) {
-    case 81:
-      if (currentCombo.isCorrect(objects[0])) {
-        correctAnswers += 1;
-        erasePreviousCombo();
-        createCombo();
-      } else { alert('errou!!!'); }
-      break;
-    case 87:
-      if (currentCombo.isCorrect(objects[1])) {
-        correctAnswers += 1;
-        erasePreviousCombo();
-        createCombo();
-      } else { alert('errou!!!'); }
-      break;
-    case 69:
-      if (currentCombo.isCorrect(objects[2])) {
-        correctAnswers += 1;
-        erasePreviousCombo();
-        createCombo();
-      } else { alert('errou!!!'); }
-      break;
-    case 65:
-      if (currentCombo.isCorrect(objects[3])) {
-        correctAnswers += 1;
-        erasePreviousCombo();
-        createCombo();
-      } else { alert('errou!!!'); }
-      break;
-    case 83:
-      if (currentCombo.isCorrect(objects[4])) {
-        correctAnswers += 1;
-        erasePreviousCombo();
-        createCombo();
-      } else { alert('errou!!!'); }
-      break;
-  }
-});
