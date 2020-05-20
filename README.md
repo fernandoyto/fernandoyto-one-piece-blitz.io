@@ -1,7 +1,10 @@
 # One Piece Blitz
 This game is my first project at Ironhack, part of the Web Development course.
 
-I decided to code a digital version of the game 'Fantasma Blitz', which is a card game that tests players reactions. It is a multiplayer game, but, given time and skill constraints, I coded a simplified, single-player version of the game -- and used a few Character-Hat combinations from japanese anime 'One Piece' to simulate object-color combinations.
+## About the game
+I decided to create an adpated version of the game 'Fantasma Blitz', which is a game that tests players reactions and visual perceptions. I believe that the best way to explain how to play the original version of the game is by watching either this [video](https://www.youtube.com/watch?v=A1x3picEes8) (Portuguese) or this [one](https://www.youtube.com/watch?v=sLiyeNpOXKQ) (English).
+
+Alright, assuming that you watched either one of the videos, now I can explain how I have adapted the game using a combination of a few One Piece characters and their respective hats:
 
 ## About the author
 Fernando Yto, 24yo, Sao Paulo - Brazil.
