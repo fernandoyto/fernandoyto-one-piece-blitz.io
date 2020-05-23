@@ -121,7 +121,7 @@ class OnePieceBlitz {
 
       if (this.gameTimeLeft === 0) {
         clearInterval(downloadTimer);
-        gameEnd();
+        this.gameEnd();
       }
     }, 1000);
   }
@@ -131,7 +131,7 @@ class OnePieceBlitz {
   }
 
   isCorrect(pickedWanted) {
-    if (pickedWanted.wanted === this.correctWanted && pickedWanted.hat === this.correctHat) {
+    if (pickedWanted.wantedName === this.correctWantedName && pickedWanted.wantedHat === this.correctWantedHat) {
       return true;
     }
     return false;

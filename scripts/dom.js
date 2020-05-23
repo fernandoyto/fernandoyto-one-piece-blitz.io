@@ -20,8 +20,8 @@ function gameStartDOM() {
       const currentGame = new OnePieceBlitz();
       displayCombo(currentGame.createCombo());
       displayAnswerOptions(currentGame.answerOptions, currentGame.answerKeys);
-      attachEventListeners();
-      startTimer();
+      attachEventListeners(currentGame);
+      startTimer(currentGame);
     }
   }, 1000);
 }
@@ -37,16 +37,10 @@ function displayCombo(comboArray) {
   }
 }
 
-function gameEnd() {
-  let images = document.getElementsByClassName('cards');
-  for (let i = images.length; i-->0;) {
-    document.images[i].parentNode.removeChild(document.images[i]);
-  }
-  for (let j = 0; j < wantedName.length; j++) {
-    document.querySelector(`.${wantedName[j]}`).textContent = '';
-  }
+function gameEndDOM(currentGame) {
+  eraseComboDOM();
   document.querySelector('.gameTime').innerHTML = '';
-  document.querySelector('.game').innerHTML = `You got ${correctAnswers} correct answers!!`;
+  document.querySelector('.game').innerHTML = `You got ${currentGame.totalCorrectAnswers} correct answers!!`;
 }
 
 function displayAnswerOptions(answerOptionsArray, answerKeysArray) {
@@ -64,7 +58,7 @@ function displayAnswerOptions(answerOptionsArray, answerKeysArray) {
 }
 
 
-function startTimer() {
+function startTimer(currentGame) {
   let gameTimeLeft = 30;
   let downloadTimer = setInterval(function () {
     document.querySelector('.gameTime').innerHTML = gameTimeLeft + ' seconds remaining';
@@ -74,7 +68,7 @@ function startTimer() {
     }
     if (gameTimeLeft < 0) {
       clearInterval(downloadTimer);
-      gameEnd();
+      gameEndDOM(currentGame);
     }
   }, 1000);
 }
@@ -86,43 +80,44 @@ function eraseComboDOM() {
   }
 }
 
-
-document.addEventListener('keydown', function (event) {
-  switch (event.keyCode) {
-    case 81:
-      if (currentGame.isCorrect(currentGame.answerOptions[0])) {
-        currentGame.totalCorrectAnswers += 1;
-        eraseComboDOM();
-        displayCombo(currentGame.createCombo());
-      } else { alert('errou!!!'); }
-      break;
-    case 87:
-      if (currentGame.isCorrect(currentGame.answerOptions[1])) {
-        currentGame.totalCorrectAnswers += 1;
-        eraseComboDOM();
-        displayCombo(currentGame.createCombo());
-      } else { alert('errou!!!'); }
-      break;
-    case 69:
-      if (currentGame.isCorrect(currentGame.answerOptions[2])) {
-        currentGame.totalCorrectAnswers += 1;
-        eraseComboDOM();
-        displayCombo(currentGame.createCombo());
-      } else { alert('errou!!!'); }
-      break;
-    case 65:
-      if (currentGame.isCorrect(currentGame.answerOptions[3])) {
-        currentGame.totalCorrectAnswers += 1;
-        eraseComboDOM();
-        displayCombo(currentGame.createCombo());
-      } else { alert('errou!!!'); }
-      break;
-    case 83:
-      if (currentGame.isCorrect(currentGame.answerOptions[4])) {
-        currentGame.totalCorrectAnswers += 1;
-        eraseComboDOM();
-        displayCombo(currentGame.createCombo());
-      } else { alert('errou!!!'); }
-      break;
-  }
-});
+function attachEventListeners(currentGame) {
+  document.addEventListener('keydown', function (event) {
+    switch (event.keyCode) {
+      case 81:
+        if (currentGame.isCorrect(currentGame.answerOptions[0])) {
+          currentGame.totalCorrectAnswers += 1;
+          eraseComboDOM();
+          displayCombo(currentGame.createCombo());
+        } else { alert('errou!!!'); }
+        break;
+      case 87:
+        if (currentGame.isCorrect(currentGame.answerOptions[1])) {
+          currentGame.totalCorrectAnswers += 1;
+          eraseComboDOM();
+          displayCombo(currentGame.createCombo());
+        } else { alert('errou!!!'); }
+        break;
+      case 69:
+        if (currentGame.isCorrect(currentGame.answerOptions[2])) {
+          currentGame.totalCorrectAnswers += 1;
+          eraseComboDOM();
+          displayCombo(currentGame.createCombo());
+        } else { alert('errou!!!'); }
+        break;
+      case 65:
+        if (currentGame.isCorrect(currentGame.answerOptions[3])) {
+          currentGame.totalCorrectAnswers += 1;
+          eraseComboDOM();
+          displayCombo(currentGame.createCombo());
+        } else { alert('errou!!!'); }
+        break;
+      case 83:
+        if (currentGame.isCorrect(currentGame.answerOptions[4])) {
+          currentGame.totalCorrectAnswers += 1;
+          eraseComboDOM();
+          displayCombo(currentGame.createCombo());
+        } else { alert('errou!!!'); }
+        break;
+    }
+  });
+}
